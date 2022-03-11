@@ -1,18 +1,14 @@
-package com.exercise.device.factories;
+package com.exercise.device.factories.entities;
 
 import java.util.Date;
 
 import com.exercise.device.database.entities.Device;
 import com.exercise.device.database.repositories.DeviceRepository;
+import com.exercise.device.factories.CommonFactory;
 
 import org.springframework.stereotype.Component;
 
-import lombok.Getter;
-import lombok.Setter;
-
 @Component
-@Setter(value = lombok.AccessLevel.PRIVATE)
-@Getter(value = lombok.AccessLevel.PRIVATE)
 public class DeviceFactory extends CommonFactory<Device> {
 
   private String name;
@@ -23,21 +19,22 @@ public class DeviceFactory extends CommonFactory<Device> {
    */
   public DeviceFactory(DeviceRepository aRepo) {
     super(aRepo);
-
-    String baseName = "device_name_";
-    String baseBrand = "device_brand_";
-
-    setName(baseName + generateRandomStr(Device.NAME_SIZE - baseName.length()));
-    setBrand(baseBrand + generateRandomStr(Device.BRAND_SIZE - baseBrand.length()));
   }
 
   @Override
   protected Device build() {
+    String baseName = "device_name_";
+    String baseBrand = "device_brand_";
+
+    name = baseName + generateRandomStr(Device.NAME_SIZE - baseName.length());
+    brand = baseBrand + generateRandomStr(Device.BRAND_SIZE - baseBrand.length());
+
     Device obj = new Device();
-    obj.setName(getName());
-    obj.setBrand(getBrand());
+    obj.setName(name);
+    obj.setBrand(brand);
     obj.setCreation(new Date());
 
     return obj;
   }
+
 }

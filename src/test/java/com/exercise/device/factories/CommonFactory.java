@@ -1,5 +1,8 @@
 package com.exercise.device.factories;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -9,6 +12,9 @@ public abstract class CommonFactory<T> {
    * Repository associated to specific entity (T)
    */
   private JpaRepository<T, Integer> repo;
+
+  public CommonFactory() {
+  }
 
   /**
    * Constrcutor
@@ -27,12 +33,39 @@ public abstract class CommonFactory<T> {
   protected abstract T build();
 
   /**
-   * Build and save T entity object into DB
+   * Build T object.
+   * If the repository is defined then save T object into DB
    * 
    * @return
    */
   public T get() {
-    return repo.save(build());
+    T obj = build();
+
+    if (repo != null) {
+      obj = repo.save(obj);
+    }
+
+    return obj;
+  }
+
+  /**
+   * Build list of T objects
+   * 
+   * @param aLength
+   * @return
+   */
+  public List<T> get(int aLength) {
+    List<T> result = new ArrayList<T>();
+
+    if (aLength <= 0) {
+      return result;
+    }
+
+    for (int i = 0; i < aLength; i++) {
+      result.add(get());
+    }
+
+    return result;
   }
 
   /**

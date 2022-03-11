@@ -8,7 +8,7 @@ import java.util.Date;
 
 import com.exercise.device.ApplicationTests;
 import com.exercise.device.database.entities.Device;
-import com.exercise.device.factories.DeviceFactory;
+import com.exercise.device.factories.entities.DeviceFactory;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
