@@ -1,10 +1,14 @@
 package com.exercise.device.factories.dto;
 
+import com.exercise.device.dto.DeviceRequestDto;
 import com.exercise.device.factories.CommonFactory;
+
+import org.springframework.stereotype.Component;
 
 import lombok.Getter;
 
 @Getter(lombok.AccessLevel.PRIVATE)
+@Component
 public class DeviceDtoFactory extends CommonFactory<DeviceRequestDto> {
 
   private String name;

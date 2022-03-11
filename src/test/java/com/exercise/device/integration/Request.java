@@ -87,11 +87,10 @@ public abstract class Request extends ApplicationTests {
    * Make DELETE request
    * 
    * @param aUrl
-   * @param aBody
    * @return
    */
-  protected Request delete(String aUrl, Object aBody) {
-    request(MockMvcRequestBuilders.put(aUrl), aBody);
+  protected Request delete(String aUrl) {
+    request(MockMvcRequestBuilders.put(aUrl), null);
     return this;
   }
 
@@ -109,7 +108,7 @@ public abstract class Request extends ApplicationTests {
    * 
    * @return
    */
-  protected String asString() {
+  public String asString() {
     String result = "";
 
     try {
