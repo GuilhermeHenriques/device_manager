@@ -5,6 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.sql.Date;
 
+import com.exercise.device.database.entities.Device;
+import com.exercise.device.factories.DeviceFactory;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

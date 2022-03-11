@@ -1,5 +1,6 @@
 package com.exercise.device.factories;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public abstract class CommonFactory<T> {
@@ -32,5 +33,14 @@ public abstract class CommonFactory<T> {
    */
   public T get() {
     return repo.save(build());
+  }
+
+  /**
+   * Generate random str
+   * 
+   * @return
+   */
+  protected String generateRandomStr(int aLength) {
+    return RandomStringUtils.randomAlphanumeric(aLength);
   }
 }
