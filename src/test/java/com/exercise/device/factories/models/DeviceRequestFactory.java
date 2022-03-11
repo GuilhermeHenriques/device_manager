@@ -1,7 +1,7 @@
-package com.exercise.device.factories.dto;
+package com.exercise.device.factories.models;
 
-import com.exercise.device.dto.DeviceRequestDto;
 import com.exercise.device.factories.CommonFactory;
+import com.exercise.device.models.DeviceRequest;
 
 import org.springframework.stereotype.Component;
 
@@ -9,14 +9,14 @@ import lombok.Getter;
 
 @Getter(lombok.AccessLevel.PRIVATE)
 @Component
-public class DeviceDtoFactory extends CommonFactory<DeviceRequestDto> {
+public class DeviceRequestFactory extends CommonFactory<DeviceRequest> {
 
   private String name;
   private String brand;
 
   @Override
-  protected DeviceRequestDto build() {
-    DeviceRequestDto obj = new DeviceRequestDto();
+  protected DeviceRequest build() {
+    DeviceRequest obj = new DeviceRequest();
     obj.setName(getName());
     obj.setBrand(getBrand());
 
@@ -26,7 +26,7 @@ public class DeviceDtoFactory extends CommonFactory<DeviceRequestDto> {
   /**
    * @param aName the name to set
    */
-  public DeviceDtoFactory setName(String aName) {
+  public DeviceRequestFactory setName(String aName) {
     name = aName;
     return this;
   }
@@ -34,7 +34,7 @@ public class DeviceDtoFactory extends CommonFactory<DeviceRequestDto> {
   /**
    * @param brand the brand to set
    */
-  public DeviceDtoFactory setBrand(String aBrand) {
+  public DeviceRequestFactory setBrand(String aBrand) {
     brand = aBrand;
     return this;
   }

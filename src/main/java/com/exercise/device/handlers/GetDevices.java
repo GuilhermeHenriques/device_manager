@@ -2,16 +2,16 @@ package com.exercise.device.handlers;
 
 import java.util.List;
 
-import com.exercise.device.dto.DeviceResponseDto;
+import com.exercise.device.models.DeviceResponse;
 
-public class GetDevices extends CommonHandler<Void, List<DeviceResponseDto>> {
+public class GetDevices extends CommonHandler<Void, List<DeviceResponse>> {
 
   public GetDevices() {
     super(null);
   }
 
   @Override
-  protected List<DeviceResponseDto> handleRequest(Void aInputs) {
+  protected List<DeviceResponse> handleRequest(Void aInputs) {
     return null;
   }
 }

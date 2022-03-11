@@ -1,11 +1,11 @@
 package com.exercise.device.controllers.v1;
 
-import com.exercise.device.dto.DeviceRequestDto;
 import com.exercise.device.handlers.DeleteDevice;
 import com.exercise.device.handlers.GetDevice;
 import com.exercise.device.handlers.GetDevices;
 import com.exercise.device.handlers.PostDevice;
 import com.exercise.device.handlers.PutDevice;
+import com.exercise.device.models.DeviceRequest;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class DeviceController extends ApiV1 {
   @RequestMapping(value = "/v1/device", method = RequestMethod.POST)
-  ResponseEntity<Object> postDevice(@RequestBody DeviceRequestDto aBody) {
+  ResponseEntity<Object> postDevice(@RequestBody DeviceRequest aBody) {
     return response(new PostDevice(aBody));
   }
 
@@ -27,7 +27,7 @@ public class DeviceController extends ApiV1 {
   }
 
   @RequestMapping(value = "/v1/device/{id}", method = RequestMethod.PUT)
-  ResponseEntity<Object> putDevice(@PathVariable Integer aId, @RequestBody DeviceRequestDto aBody) {
+  ResponseEntity<Object> putDevice(@PathVariable Integer aId, @RequestBody DeviceRequest aBody) {
     return response(new PutDevice(aId, aBody));
   }
 

@@ -1,4 +1,4 @@
-package com.exercise.device.dto;
+package com.exercise.device.models;
 
 import java.util.Date;
 
@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class DeviceResponseDto extends DeviceRequestDto {
+public class DeviceResponse extends DeviceRequest {
   private Integer id;
   private Date creation;
 }

@@ -1,15 +1,15 @@
 package com.exercise.device.handlers;
 
-import com.exercise.device.dto.DeviceResponseDto;
+import com.exercise.device.models.DeviceResponse;
 
-public class GetDevice extends CommonHandler<Integer, DeviceResponseDto> {
+public class GetDevice extends CommonHandler<Integer, DeviceResponse> {
 
   public GetDevice(Integer aInput) {
     super(aInput);
   }
 
   @Override
-  protected DeviceResponseDto handleRequest(Integer aInput) {
+  protected DeviceResponse handleRequest(Integer aInput) {
     return null;
   }
 }

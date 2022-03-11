@@ -1,16 +1,16 @@
 package com.exercise.device.handlers;
 
-import com.exercise.device.dto.DeviceRequestDto;
-import com.exercise.device.dto.DeviceResponseDto;
+import com.exercise.device.models.DeviceRequest;
+import com.exercise.device.models.DeviceResponse;
 
-public class PostDevice extends CommonHandler<DeviceRequestDto, DeviceResponseDto> {
+public class PostDevice extends CommonHandler<DeviceRequest, DeviceResponse> {
 
-  public PostDevice(DeviceRequestDto aInput) {
+  public PostDevice(DeviceRequest aInput) {
     super(aInput);
   }
 
   @Override
-  protected DeviceResponseDto handleRequest(DeviceRequestDto aInput) {
+  protected DeviceResponse handleRequest(DeviceRequest aInput) {
     return null;
   }
 }
