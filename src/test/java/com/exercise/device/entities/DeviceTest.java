@@ -1,10 +1,12 @@
 package com.exercise.device.entities;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.sql.Date;
+import java.util.Date;
 
+import com.exercise.device.ApplicationTests;
 import com.exercise.device.database.entities.Device;
 import com.exercise.device.factories.DeviceFactory;
 
@@ -16,7 +18,7 @@ public class DeviceTest extends ApplicationTests {
   private DeviceFactory deviceFact;
 
   @Test
-  public void deviceTest() {
+  public void deviceEntityTest() {
     Device dev = deviceFact.get();
 
     String name = dev.getName();
@@ -24,7 +26,11 @@ public class DeviceTest extends ApplicationTests {
     Date creation = dev.getCreation();
 
     assertTrue(name.contains("device_name"));
-    assertTrue(brand.contains("decivce_brands"));
+    assertEquals(Device.NAME_SIZE, name.length());
+
+    assertTrue(brand.contains("device_brand"));
+    assertEquals(Device.BRAND_SIZE, brand.length());
+
     assertNotNull(creation);
   }
 }

@@ -1,6 +1,6 @@
 package com.exercise.device.database.entities;
 
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,7 +14,10 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "device")
 public class Device {
-  private int id;
+  public static final int NAME_SIZE = 50;
+  public static final int BRAND_SIZE = 150;
+
+  private Integer id;
   private String name;
   private String brand;
   private Date creation;
@@ -26,7 +29,7 @@ public class Device {
   }
 
   public Device(int aId) {
-    id = aId;
+    setId(aId);
   }
 
   /**
@@ -35,21 +38,21 @@ public class Device {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", unique = true, nullable = false)
-  public int getId() {
+  public Integer getId() {
     return id;
   }
 
   /**
    * @param id the id to set
    */
-  public void setId(int id) {
+  public void setId(Integer id) {
     this.id = id;
   }
 
   /**
    * @return the name
    */
-  @Column(name = "name", nullable = false, length = 50)
+  @Column(name = "name", nullable = false, length = NAME_SIZE)
   public String getName() {
     return name;
   }
@@ -64,7 +67,7 @@ public class Device {
   /**
    * @return the brand
    */
-  @Column(name = "brand", nullable = false, length = 150)
+  @Column(name = "brand", nullable = false, length = BRAND_SIZE)
   public String getBrand() {
     return brand;
   }

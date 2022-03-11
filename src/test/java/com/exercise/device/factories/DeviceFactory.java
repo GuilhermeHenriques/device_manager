@@ -1,6 +1,9 @@
 package com.exercise.device.factories;
 
+import java.util.Date;
+
 import com.exercise.device.database.entities.Device;
+import com.exercise.device.database.repositories.DeviceRepository;
 
 import org.springframework.stereotype.Component;
 
@@ -24,9 +27,8 @@ public class DeviceFactory extends CommonFactory<Device> {
     String baseName = "device_name_";
     String baseBrand = "device_brand_";
 
-    setName(baseName + generateRandomStr(50 - baseName.length()));
-    setBrand(baseBrand + generateRandomStr(150 - baseBrand.length()));
-
+    setName(baseName + generateRandomStr(Device.NAME_SIZE - baseName.length()));
+    setBrand(baseBrand + generateRandomStr(Device.BRAND_SIZE - baseBrand.length()));
   }
 
   @Override
@@ -34,8 +36,8 @@ public class DeviceFactory extends CommonFactory<Device> {
     Device obj = new Device();
     obj.setName(getName());
     obj.setBrand(getBrand());
+    obj.setCreation(new Date());
 
     return obj;
   }
-
 }
