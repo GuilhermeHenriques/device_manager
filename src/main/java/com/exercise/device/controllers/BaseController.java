@@ -1,10 +1,10 @@
-package com.exercise.device.controllers.v1;
+package com.exercise.device.controllers;
 
 import com.exercise.device.handlers.CommonHandler;
 
 import org.springframework.http.ResponseEntity;
 
-public abstract class ApiV1 {
+public abstract class BaseController {
   /**
    * Request execution
    * 

@@ -1,4 +1,4 @@
-package com.exercise.device.controllers.v1;
+package com.exercise.device.controllers;
 
 import com.exercise.device.handlers.DeleteDevice;
 import com.exercise.device.handlers.GetDevice;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class DeviceController extends ApiV1 {
+public class DeviceController extends BaseController {
   @RequestMapping(value = "/v1/device", method = RequestMethod.POST)
   ResponseEntity<Object> postDevice(@RequestBody DeviceRequest aBody) {
     return response(new PostDevice(aBody));
