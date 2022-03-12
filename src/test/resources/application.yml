@@ -1,12 +1,9 @@
 server:
-  port: 8080
   servlet:
-    context-path: /device-manager
+    context-path: /device-manager-test
 spring:
   profiles:
     active: test
-  application:
-    name: device-manager
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
   sql:
