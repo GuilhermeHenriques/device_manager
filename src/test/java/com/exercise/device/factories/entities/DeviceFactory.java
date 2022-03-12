@@ -3,7 +3,7 @@ package com.exercise.device.factories.entities;
 import java.util.Date;
 
 import com.exercise.device.database.entities.Device;
-import com.exercise.device.database.repositories.DeviceRepository;
+import com.exercise.device.database.repositories.IDeviceRepository;
 import com.exercise.device.factories.CommonFactory;
 
 import org.springframework.stereotype.Component;
@@ -17,7 +17,7 @@ public class DeviceFactory extends CommonFactory<Device> {
   /**
    * @param aRepo
    */
-  public DeviceFactory(DeviceRepository aRepo) {
+  public DeviceFactory(IDeviceRepository aRepo) {
     super(aRepo);
   }
 

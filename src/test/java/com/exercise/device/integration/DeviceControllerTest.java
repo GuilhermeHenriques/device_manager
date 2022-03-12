@@ -12,8 +12,8 @@ import com.exercise.device.factories.entities.DeviceFactory;
 import com.exercise.device.factories.models.DeviceRequestFactory;
 import com.exercise.device.models.DeviceRequest;
 import com.exercise.device.models.DeviceResponse;
-import com.exercise.device.models.DevicesResponse;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class DeviceControllerTest extends Request {
   private DeviceFactory deviceFactory;
 
   @Autowired
-  private DeviceRequestFactory deviceDtoFactory;
+  private DeviceRequestFactory deviceRequestFactory;
 
   @Test
   public void getDevice() {
@@ -33,11 +33,15 @@ public class DeviceControllerTest extends Request {
     Request response = get("/v1/device/" + device.getId());
     assertEquals(HttpStatus.OK.value(), response.getResponse().getStatus());
 
-    DeviceResponse deviceDto = new Gson().fromJson(response.asString(), DeviceResponse.class);
-    assertEquals(device.getId(), deviceDto.getId());
-    assertEquals(device.getName(), deviceDto.getName());
-    assertEquals(device.getBrand(), deviceDto.getBrand());
-    assertEquals(device.getCreation().toString(), deviceDto.getCreation().toString());
+    DeviceResponse responseObj = new Gson().fromJson(response.asString(), DeviceResponse.class);
+    assertEquals(device.getId(), responseObj.getId());
+    assertEquals(device.getName(), responseObj.getName());
+    assertEquals(device.getBrand(), responseObj.getBrand());
+    assertEquals(device.getCreation().toString(), responseObj.getCreation().toString());
+
+    response = get("/v1/device/0");
+    assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), response.getResponse().getStatus());
+    assertTrue(response.asString().contains(ExceptionEnum.INVALID_ID.getKey()));
 
     response = get("/v1/device/0");
     assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), response.getResponse().getStatus());
@@ -51,27 +55,29 @@ public class DeviceControllerTest extends Request {
     Request response = get("/v1/devices");
     assertEquals(HttpStatus.OK.value(), response.getResponse().getStatus());
 
-    DevicesResponse devicesDto = new Gson().fromJson(response.asString(),
-        DevicesResponse.class);
-    List<DeviceResponse> list = devicesDto.getDevices();
+    List<DeviceResponse> list = new Gson().fromJson(response.asString(), new TypeToken<List<DeviceResponse>>() {
+    }.getType());
 
-    assertEquals(devicesDB.size(), list.size());
+    assertTrue(devicesDB.size() <= list.size());
 
     for (int i = 0; i < devicesDB.size(); i++) {
       Device deviceDB = devicesDB.get(i);
-      DeviceResponse deviceDto = list.get(i);
+      DeviceResponse responseObj = list.get(i);
 
-      assertEquals(deviceDB.getId(), deviceDto.getId());
-      assertEquals(deviceDB.getBrand(), deviceDto.getBrand());
-      assertEquals(deviceDB.getName(), deviceDto.getName());
+      if (deviceDB.getId() != responseObj.getId()) {
+        continue;
+      }
+
+      assertEquals(deviceDB.getBrand(), responseObj.getBrand());
+      assertEquals(deviceDB.getName(), responseObj.getName());
       assertEquals(deviceDB.getCreation().toString(),
-          deviceDto.getCreation().toString());
+          responseObj.getCreation().toString());
     }
   }
 
   @Test
   public void postDevice() {
-    DeviceRequest request = deviceDtoFactory
+    DeviceRequest request = deviceRequestFactory
         .setBrand("brand_post_test")
         .setName("name_post_test")
         .get();
@@ -79,13 +85,13 @@ public class DeviceControllerTest extends Request {
     Request response = post("/v1/device", request);
     assertEquals(HttpStatus.OK.value(), response.getResponse().getStatus());
 
-    DeviceResponse responseDto = new Gson().fromJson(response.asString(), DeviceResponse.class);
-    assertNotNull(responseDto.getId());
-    assertEquals(request.getName(), responseDto.getName());
-    assertEquals(request.getBrand(), responseDto.getBrand());
-    assertNotNull(responseDto.getCreation());
+    DeviceResponse responseObj = new Gson().fromJson(response.asString(), DeviceResponse.class);
+    assertNotNull(responseObj.getId());
+    assertEquals(request.getName(), responseObj.getName());
+    assertEquals(request.getBrand(), responseObj.getBrand());
+    assertNotNull(responseObj.getCreation());
 
-    request = deviceDtoFactory
+    request = deviceRequestFactory
         .setBrand("brand_post_test")
         .setName(null)
         .get();
@@ -94,7 +100,7 @@ public class DeviceControllerTest extends Request {
     assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), response.getResponse().getStatus());
     assertTrue(response.asString().contains("INVALID_NAME"));
 
-    request = deviceDtoFactory
+    request = deviceRequestFactory
         .setBrand("")
         .setName("name_post_test")
         .get();
@@ -108,7 +114,7 @@ public class DeviceControllerTest extends Request {
   public void putDevice() {
     Device device = deviceFactory.get();
 
-    DeviceRequest request = deviceDtoFactory
+    DeviceRequest request = deviceRequestFactory
         .setBrand("brand_put_test")
         .setName("name_put_test")
         .get();
@@ -116,14 +122,21 @@ public class DeviceControllerTest extends Request {
     Request response = put("/v1/device/" + device.getId(), request);
     assertEquals(HttpStatus.OK.value(), response.getResponse().getStatus());
 
-    DeviceResponse responseDto = new Gson().fromJson(response.asString(), DeviceResponse.class);
-    assertEquals(device.getId(), responseDto.getId());
-    assertEquals(request.getName(), responseDto.getName());
-    assertEquals(request.getBrand(), responseDto.getBrand());
-    assertEquals(device.getCreation().toString(), responseDto.getCreation().toString());
+    DeviceResponse responseObj = new Gson().fromJson(response.asString(), DeviceResponse.class);
+    assertEquals(device.getId(), responseObj.getId());
+    assertEquals(request.getName(), responseObj.getName());
+    assertEquals(request.getBrand(), responseObj.getBrand());
+    assertEquals(device.getCreation().toString(), responseObj.getCreation().toString());
 
-    request = deviceDtoFactory.setBrand("brand_put_test")
+    request = deviceRequestFactory.setBrand("brand_put_test")
         .setName(null)
+        .get();
+
+    response = put("/v1/device/" + device.getId(), request);
+    assertEquals(HttpStatus.OK.value(), response.getResponse().getStatus());
+
+    request = deviceRequestFactory.setBrand(null)
+        .setName("name_put_test")
         .get();
 
     response = put("/v1/device/" + device.getId(), request);
@@ -132,6 +145,10 @@ public class DeviceControllerTest extends Request {
     response = put("/v1/device/0", request);
     assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), response.getResponse().getStatus());
     assertTrue(response.asString().contains(ExceptionEnum.INVALID_ID.getKey()));
+
+    response = put("/v1/device/999999999", request);
+    assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), response.getResponse().getStatus());
+    assertTrue(response.asString().contains(ExceptionEnum.DEVICE_NOT_FOUND.getKey()));
   }
 
   @Test
@@ -140,6 +157,10 @@ public class DeviceControllerTest extends Request {
 
     Request response = delete("/v1/device/" + device.getId());
     assertEquals(HttpStatus.OK.value(), response.getResponse().getStatus());
+
+    response = delete("/v1/device/0");
+    assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), response.getResponse().getStatus());
+    assertTrue(response.asString().contains(ExceptionEnum.INVALID_ID.getKey()));
 
     response = delete("/v1/device/0");
     assertEquals(HttpStatus.INTERNAL_SERVER_ERROR.value(), response.getResponse().getStatus());
