@@ -90,7 +90,7 @@ public abstract class Request extends ApplicationTests {
    * @return
    */
   protected Request delete(String aUrl) {
-    request(MockMvcRequestBuilders.put(aUrl), null);
+    request(MockMvcRequestBuilders.delete(aUrl), null);
     return this;
   }
 
