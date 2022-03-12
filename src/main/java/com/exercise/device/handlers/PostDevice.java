@@ -1,5 +1,6 @@
 package com.exercise.device.handlers;
 
+import com.exercise.device.database.entities.Device;
 import com.exercise.device.database.handlers.DeviceHandler;
 import com.exercise.device.exceptions.DeviceException;
 import com.exercise.device.exceptions.ExceptionEnum;
@@ -32,11 +33,11 @@ public class PostDevice extends CommonHandler<DeviceRequest, DeviceResponse> {
     String brand = aInput.getBrand();
     String name = aInput.getName();
 
-    if (StringUtils.isBlank(brand)) {
+    if (StringUtils.isBlank(brand) || brand.length() > Device.BRAND_SIZE) {
       throw new DeviceException(ExceptionEnum.INVALID_BRAND);
     }
 
-    if (StringUtils.isBlank(name)) {
+    if (StringUtils.isBlank(name) || name.length() > Device.NAME_SIZE) {
       throw new DeviceException(ExceptionEnum.INVALID_NAME);
     }
   }

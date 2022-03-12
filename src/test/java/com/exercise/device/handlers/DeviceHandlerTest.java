@@ -68,6 +68,24 @@ public class DeviceHandlerTest extends ApplicationTests {
 
     PostDevice handler = (PostDevice) assertDoesNotThrow(() -> postDevice.execute(inputs));
     assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, handler.getStatus());
+
+    DeviceRequest inputs2 = devReqFac.setName("name_test_qqwdqwdwqdweqwdqfdqwfqwfqwfqfwfqf")
+        .setBrand("brand_test")
+        .get();
+
+    handler = (PostDevice) assertDoesNotThrow(() -> postDevice.execute(inputs2));
+    assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, handler.getStatus());
+    ExceptionResponse obj = (ExceptionResponse) handler.getOutput();
+    assertEquals(ExceptionEnum.INVALID_NAME.getKey(), obj.getKey());
+
+    DeviceRequest inputs3 = devReqFac.setName("name_test")
+        .setBrand("brand_test_qqwdqwdwqdweqwdqfdqwfqwfqwfqfwfqf")
+        .get();
+
+    handler = (PostDevice) assertDoesNotThrow(() -> postDevice.execute(inputs3));
+    assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, handler.getStatus());
+    obj = (ExceptionResponse) handler.getOutput();
+    assertEquals(ExceptionEnum.INVALID_BRAND.getKey(), obj.getKey());
   }
 
   @Test
@@ -146,6 +164,26 @@ public class DeviceHandlerTest extends ApplicationTests {
     assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, handler.getStatus());
     obj = (ExceptionResponse) handler.getOutput();
     assertEquals(ExceptionEnum.DEVICE_NOT_FOUND.getKey(), obj.getKey());
+
+    DeviceIdRequest inputs4 = devIdReqFac.setBrand("brand_name_wdqwqdwdqwdqwdqwdqwdqwdq3232")
+        .setName(null)
+        .setId(1)
+        .get();
+
+    handler = (PutDevice) assertDoesNotThrow(() -> putDevice.execute(inputs4));
+    assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, handler.getStatus());
+    obj = (ExceptionResponse) handler.getOutput();
+    assertEquals(ExceptionEnum.INVALID_BRAND.getKey(), obj.getKey());
+
+    DeviceIdRequest inputs5 = devIdReqFac.setName("name_wdqwqdwdqwdqwdqwdqwdqwdq3232qwdd")
+        .setBrand(null)
+        .setId(1)
+        .get();
+
+    handler = (PutDevice) assertDoesNotThrow(() -> putDevice.execute(inputs5));
+    assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, handler.getStatus());
+    obj = (ExceptionResponse) handler.getOutput();
+    assertEquals(ExceptionEnum.INVALID_NAME.getKey(), obj.getKey());
   }
 
   @Test
