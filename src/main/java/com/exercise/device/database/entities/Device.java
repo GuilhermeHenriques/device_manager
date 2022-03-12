@@ -14,8 +14,8 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "device")
 public class Device {
-  public static final int NAME_SIZE = 50;
-  public static final int BRAND_SIZE = 150;
+  public static final int NAME_SIZE = 25;
+  public static final int BRAND_SIZE = 25;
 
   private Integer id;
   private String name;
