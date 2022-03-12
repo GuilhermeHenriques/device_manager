@@ -2,16 +2,20 @@ package com.exercise.device.handlers;
 
 import java.util.List;
 
+import com.exercise.device.database.handlers.DeviceHandler;
+import com.exercise.device.models.DeviceIdRequest;
 import com.exercise.device.models.DeviceResponse;
 
-public class GetDevices extends CommonHandler<Void, List<DeviceResponse>> {
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-  public GetDevices() {
-    super(null);
-  }
+@Component
+public class GetDevices extends CommonHandler<DeviceIdRequest, List<DeviceResponse>> {
+  @Autowired
+  private DeviceHandler deviceHandler;
 
   @Override
-  protected List<DeviceResponse> handleRequest(Void aInputs) {
-    return null;
+  protected List<DeviceResponse> handleRequest(DeviceIdRequest aInputs) throws Exception {
+    return deviceHandler.list(aInputs);
   }
 }

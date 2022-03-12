@@ -1,22 +1,25 @@
 package com.exercise.device.handlers;
 
+import com.exercise.device.database.handlers.DeviceHandler;
 import com.exercise.device.exceptions.DeviceException;
 import com.exercise.device.exceptions.ExceptionEnum;
 import com.exercise.device.models.DeviceRequest;
 import com.exercise.device.models.DeviceResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class PostDevice extends CommonHandler<DeviceRequest, DeviceResponse> {
-
-  public PostDevice(DeviceRequest aInput) {
-    super(aInput);
-  }
+  @Autowired
+  private DeviceHandler deviceHandler;
 
   @Override
   protected DeviceResponse handleRequest(DeviceRequest aInput) throws Exception {
     validate(aInput);
-    return null;
+
+    return deviceHandler.create(aInput);
   }
 
   /**

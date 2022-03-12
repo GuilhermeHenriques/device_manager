@@ -12,8 +12,6 @@ public abstract class BaseController {
    * @return
    */
   protected ResponseEntity<Object> response(CommonHandler<?, ?> aHandler) {
-    aHandler.execute();
-
     return new ResponseEntity<Object>(aHandler.getOutput(), aHandler.getStatus());
   }
 }

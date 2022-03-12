@@ -4,8 +4,11 @@ import lombok.Getter;
 
 @Getter
 public enum ExceptionEnum {
-  INVALID_NAME(101, "INVALID_NAME", "Please set a valid name"),
-  INVALID_BRAND(102, "INVALID_BRAND", "Please set a valid brand");
+  INVALID_NAME(301, "INVALID_NAME", "Please set a valid name"),
+  INVALID_BRAND(302, "INVALID_BRAND", "Please set a valid brand"),
+  INVALID_ID(303, "INVALID_ID", "Please set a valid id"),
+  DEVICE_NOT_FOUND(311, "DEVICE_NOT_FOUND", "Requested device wasn't found"),
+  UNKNOWN_ERROR(999, "UNKNOWN_ERROR", "");
 
   /**
    * Error code associated to specific

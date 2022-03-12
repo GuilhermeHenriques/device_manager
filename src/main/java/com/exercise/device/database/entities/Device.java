@@ -28,10 +28,6 @@ public class Device {
   public Device() {
   }
 
-  public Device(int aId) {
-    setId(aId);
-  }
-
   /**
    * @return the id
    */
@@ -82,7 +78,7 @@ public class Device {
   /**
    * @return the creation
    */
-  @Temporal(TemporalType.DATE)
+  @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "creation", nullable = false, length = 10)
   public Date getCreation() {
     return creation;

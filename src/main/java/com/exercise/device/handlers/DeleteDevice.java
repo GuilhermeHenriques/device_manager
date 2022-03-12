@@ -1,13 +1,21 @@
 package com.exercise.device.handlers;
 
-public class DeleteDevice extends CommonHandler<Integer, Void> {
+import com.exercise.device.database.handlers.DeviceHandler;
+import com.exercise.device.exceptions.DeviceException;
 
-  public DeleteDevice(Integer aDeviceId) {
-    super(aDeviceId);
-  }
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
+public class DeleteDevice extends CommonHandler<Integer, Void> {
+  @Autowired
+  private DeviceHandler deviceHandler;
 
   @Override
-  protected Void handleRequest(Integer aDeviceId) {
+  protected Void handleRequest(Integer aDeviceId) throws DeviceException {
+    checkId(aDeviceId);
+    deviceHandler.delete(aDeviceId);
+
     return null;
   }
 }
