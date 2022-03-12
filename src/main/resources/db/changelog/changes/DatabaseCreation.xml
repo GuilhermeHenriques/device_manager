@@ -1,8 +1,8 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.6.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
-    <changeSet author="guilhermehenriques (generated)" id="1647092333719-1">
+    <changeSet author="guilherme henriques" id="create-table">
         <createTable tableName="device">
-            <column autoIncrement="true" name="id" remarks="Primary Key" type="INT">
+            <column name="id" remarks="Primary Key" type="INT">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="name" remarks="Device name" type="VARCHAR(25)">
@@ -11,9 +11,12 @@
             <column name="brand" remarks="Device brand" type="VARCHAR(25)">
                 <constraints nullable="false"/>
             </column>
-            <column name="creation" remarks="Device creation time" type="datetime">
+            <column name="creation" remarks="Device creation time" type="timestamp">
                 <constraints nullable="false"/>
             </column>
         </createTable>
+    </changeSet>
+    <changeSet author="guilherme henriques" id="update-fields">  
+      <addAutoIncrement columnDataType="INT" columnName="id" incrementBy="1" tableName="device"/>   
     </changeSet>
 </databaseChangeLog>
