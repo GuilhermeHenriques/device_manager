@@ -10,7 +10,7 @@ spring:
     database-platform: org.hibernate.dialect.MySQL8Dialect
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${database_id:127.0.0.1}:${database_port:3306}/${database_name:device_manager}?createDatabaseIfNotExist=true
+    url: jdbc:mysql://${database_host:127.0.0.1}:${database_port:3306}/${database_name:device_manager}?createDatabaseIfNotExist=true
     username: ${database_user:root}
     password: ${database_password:root}
   mvc:
