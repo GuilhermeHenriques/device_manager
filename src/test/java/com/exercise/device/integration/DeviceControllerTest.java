@@ -10,8 +10,7 @@ import com.exercise.device.database.entities.Device;
 import com.exercise.device.exceptions.ExceptionEnum;
 import com.exercise.device.factories.entities.DeviceFactory;
 import com.exercise.device.factories.models.DeviceRequestFactory;
-import com.exercise.device.models.DeviceRequest;
-import com.exercise.device.models.DeviceResponse;
+import com.exercise.device.models.DeviceModel;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -33,7 +32,7 @@ public class DeviceControllerTest extends Request {
     Request response = get("/v1/device/" + device.getId());
     assertEquals(HttpStatus.OK.value(), response.getResponse().getStatus());
 
-    DeviceResponse responseObj = new Gson().fromJson(response.asString(), DeviceResponse.class);
+    DeviceModel responseObj = new Gson().fromJson(response.asString(), DeviceModel.class);
     assertEquals(device.getId(), responseObj.getId());
     assertEquals(device.getName(), responseObj.getName());
     assertEquals(device.getBrand(), responseObj.getBrand());
@@ -55,14 +54,14 @@ public class DeviceControllerTest extends Request {
     Request response = get("/v1/devices");
     assertEquals(HttpStatus.OK.value(), response.getResponse().getStatus());
 
-    List<DeviceResponse> list = new Gson().fromJson(response.asString(), new TypeToken<List<DeviceResponse>>() {
+    List<DeviceModel> list = new Gson().fromJson(response.asString(), new TypeToken<List<DeviceModel>>() {
     }.getType());
 
     assertTrue(devicesDB.size() <= list.size());
 
     for (int i = 0; i < devicesDB.size(); i++) {
       Device deviceDB = devicesDB.get(i);
-      DeviceResponse responseObj = list.get(i);
+      DeviceModel responseObj = list.get(i);
 
       if (deviceDB.getId() != responseObj.getId()) {
         continue;
@@ -77,7 +76,7 @@ public class DeviceControllerTest extends Request {
 
   @Test
   public void postDevice() {
-    DeviceRequest request = deviceRequestFactory
+    DeviceModel request = deviceRequestFactory
         .setBrand("brand_post_test")
         .setName("name_post_test")
         .get();
@@ -85,7 +84,7 @@ public class DeviceControllerTest extends Request {
     Request response = post("/v1/device", request);
     assertEquals(HttpStatus.OK.value(), response.getResponse().getStatus());
 
-    DeviceResponse responseObj = new Gson().fromJson(response.asString(), DeviceResponse.class);
+    DeviceModel responseObj = new Gson().fromJson(response.asString(), DeviceModel.class);
     assertNotNull(responseObj.getId());
     assertEquals(request.getName(), responseObj.getName());
     assertEquals(request.getBrand(), responseObj.getBrand());
@@ -114,7 +113,7 @@ public class DeviceControllerTest extends Request {
   public void putDevice() {
     Device device = deviceFactory.get();
 
-    DeviceRequest request = deviceRequestFactory
+    DeviceModel request = deviceRequestFactory
         .setBrand("brand_put_test")
         .setName("name_put_test")
         .get();
@@ -122,7 +121,7 @@ public class DeviceControllerTest extends Request {
     Request response = put("/v1/device/" + device.getId(), request);
     assertEquals(HttpStatus.OK.value(), response.getResponse().getStatus());
 
-    DeviceResponse responseObj = new Gson().fromJson(response.asString(), DeviceResponse.class);
+    DeviceModel responseObj = new Gson().fromJson(response.asString(), DeviceModel.class);
     assertEquals(device.getId(), responseObj.getId());
     assertEquals(request.getName(), responseObj.getName());
     assertEquals(request.getBrand(), responseObj.getBrand());

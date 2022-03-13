@@ -7,8 +7,7 @@ import com.exercise.device.handlers.GetDevice;
 import com.exercise.device.handlers.GetDevices;
 import com.exercise.device.handlers.PostDevice;
 import com.exercise.device.handlers.PutDevice;
-import com.exercise.device.models.DeviceIdRequest;
-import com.exercise.device.models.DeviceRequest;
+import com.exercise.device.models.DeviceModel;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +34,7 @@ public class DeviceV1Controller extends BaseController implements IDeviceV1Contr
   private GetDevices getDevices;
 
   @Override
-  public ResponseEntity<Object> postDevice(@RequestBody DeviceRequest aBody) {
+  public ResponseEntity<Object> postDevice(@RequestBody DeviceModel aBody) {
     return response(postDevice.execute(aBody));
   }
 
@@ -45,8 +44,8 @@ public class DeviceV1Controller extends BaseController implements IDeviceV1Contr
   }
 
   @Override
-  public ResponseEntity<Object> putDevice(@PathVariable("id") Integer aId, @RequestBody DeviceRequest aBody) {
-    DeviceIdRequest model = new DeviceIdRequest(aId, aBody.getName(), aBody.getBrand());
+  public ResponseEntity<Object> putDevice(@PathVariable("id") Integer aId, @RequestBody DeviceModel aBody) {
+    DeviceModel model = new DeviceModel(aId, aBody.getName(), aBody.getBrand(), null);
     return response(putDevice.execute(model));
   }
 
@@ -59,7 +58,7 @@ public class DeviceV1Controller extends BaseController implements IDeviceV1Contr
   public ResponseEntity<Object> getDevices(@RequestParam(name = "id", required = false) Integer aId,
       @RequestParam(name = "name", required = false) String aName,
       @RequestParam(name = "brand", required = false) String aBrand) {
-    DeviceIdRequest inputs = new DeviceIdRequest(aId, aName, aBrand);
+    DeviceModel inputs = new DeviceModel(aId, aName, aBrand, null);
     return response(getDevices.execute(inputs));
   }
 }

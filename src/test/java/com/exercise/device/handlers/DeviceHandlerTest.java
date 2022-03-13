@@ -10,10 +10,8 @@ import com.exercise.device.exceptions.ExceptionEnum;
 import com.exercise.device.factories.entities.DeviceFactory;
 import com.exercise.device.factories.models.DeviceIdRequestFactory;
 import com.exercise.device.factories.models.DeviceRequestFactory;
-import com.exercise.device.models.DeviceIdRequest;
-import com.exercise.device.models.DeviceRequest;
-import com.exercise.device.models.DeviceResponse;
-import com.exercise.device.models.ExceptionResponse;
+import com.exercise.device.models.DeviceModel;
+import com.exercise.device.models.ExceptionModel;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,14 +44,14 @@ public class DeviceHandlerTest extends ApplicationTests {
 
   @Test
   public void postDeviceSuccessTest() {
-    DeviceRequest inputs = devReqFac.setName("test_name")
+    DeviceModel inputs = devReqFac.setName("test_name")
         .setBrand("brand_name")
         .get();
 
     PostDevice handler = (PostDevice) assertDoesNotThrow(() -> postDevice.execute(inputs));
     assertEquals(HttpStatus.OK, handler.getStatus());
 
-    DeviceResponse response = (DeviceResponse) handler.getOutput();
+    DeviceModel response = (DeviceModel) handler.getOutput();
     assertNotNull(response.getId());
     assertEquals(response.getName(), inputs.getName());
     assertEquals(response.getBrand(), inputs.getBrand());
@@ -62,29 +60,29 @@ public class DeviceHandlerTest extends ApplicationTests {
 
   @Test
   public void postDeviceFailTest() {
-    DeviceRequest inputs = devReqFac.setName(null)
+    DeviceModel inputs = devReqFac.setName(null)
         .setBrand(null)
         .get();
 
     PostDevice handler = (PostDevice) assertDoesNotThrow(() -> postDevice.execute(inputs));
     assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, handler.getStatus());
 
-    DeviceRequest inputs2 = devReqFac.setName("name_test_qqwdqwdwqdweqwdqfdqwfqwfqwfqfwfqf")
+    DeviceModel inputs2 = devReqFac.setName("name_test_qqwdqwdwqdweqwdqfdqwfqwfqwfqfwfqf")
         .setBrand("brand_test")
         .get();
 
     handler = (PostDevice) assertDoesNotThrow(() -> postDevice.execute(inputs2));
     assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, handler.getStatus());
-    ExceptionResponse obj = (ExceptionResponse) handler.getOutput();
+    ExceptionModel obj = (ExceptionModel) handler.getOutput();
     assertEquals(ExceptionEnum.INVALID_NAME.getKey(), obj.getKey());
 
-    DeviceRequest inputs3 = devReqFac.setName("name_test")
+    DeviceModel inputs3 = devReqFac.setName("name_test")
         .setBrand("brand_test_qqwdqwdwqdweqwdqfdqwfqwfqwfqfwfqf")
         .get();
 
     handler = (PostDevice) assertDoesNotThrow(() -> postDevice.execute(inputs3));
     assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, handler.getStatus());
-    obj = (ExceptionResponse) handler.getOutput();
+    obj = (ExceptionModel) handler.getOutput();
     assertEquals(ExceptionEnum.INVALID_BRAND.getKey(), obj.getKey());
   }
 
@@ -92,7 +90,7 @@ public class DeviceHandlerTest extends ApplicationTests {
   public void putDeviceSuccessTest() {
     Device dev = devFact.get();
 
-    DeviceIdRequest inputs = devIdReqFac.setName("test_name")
+    DeviceModel inputs = devIdReqFac.setName("test_name")
         .setBrand("brand_name")
         .setId(dev.getId())
         .get();
@@ -100,33 +98,33 @@ public class DeviceHandlerTest extends ApplicationTests {
     PutDevice handler = (PutDevice) assertDoesNotThrow(() -> putDevice.execute(inputs));
     assertEquals(HttpStatus.OK, handler.getStatus());
 
-    DeviceResponse response = (DeviceResponse) handler.getOutput();
+    DeviceModel response = (DeviceModel) handler.getOutput();
     assertNotNull(response.getId());
     assertEquals(inputs.getName(), response.getName());
     assertEquals(inputs.getBrand(), response.getBrand());
     assertNotNull(response.getCreation());
 
-    DeviceIdRequest inputs2 = devIdReqFac.setName("test_name_3232")
+    DeviceModel inputs2 = devIdReqFac.setName("test_name_3232")
         .setId(dev.getId())
         .get();
 
     handler = (PutDevice) assertDoesNotThrow(() -> putDevice.execute(inputs2));
     assertEquals(HttpStatus.OK, handler.getStatus());
 
-    DeviceResponse response2 = (DeviceResponse) handler.getOutput();
+    DeviceModel response2 = (DeviceModel) handler.getOutput();
     assertEquals("test_name_3232", response2.getName());
     assertEquals(response.getBrand(), response2.getBrand());
     assertEquals(response.getCreation(), response2.getCreation());
     assertEquals(response.getId(), response2.getId());
 
-    DeviceIdRequest inputs3 = devIdReqFac.setBrand("brand_name_3232")
+    DeviceModel inputs3 = devIdReqFac.setBrand("brand_name_3232")
         .setId(dev.getId())
         .get();
 
     handler = (PutDevice) assertDoesNotThrow(() -> putDevice.execute(inputs3));
     assertEquals(HttpStatus.OK, handler.getStatus());
 
-    DeviceResponse response3 = (DeviceResponse) handler.getOutput();
+    DeviceModel response3 = (DeviceModel) handler.getOutput();
     assertEquals(response2.getName(), response3.getName());
     assertEquals("brand_name_3232", response3.getBrand());
     assertEquals(response2.getCreation(), response3.getCreation());
@@ -135,54 +133,54 @@ public class DeviceHandlerTest extends ApplicationTests {
 
   @Test
   public void putDeviceFailTest() {
-    DeviceIdRequest inputs = devIdReqFac.setName(null)
+    DeviceModel inputs = devIdReqFac.setName(null)
         .setBrand(null)
         .setId(null)
         .get();
 
     PutDevice handler = (PutDevice) assertDoesNotThrow(() -> putDevice.execute(inputs));
     assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, handler.getStatus());
-    ExceptionResponse obj = (ExceptionResponse) handler.getOutput();
+    ExceptionModel obj = (ExceptionModel) handler.getOutput();
     assertEquals(ExceptionEnum.INVALID_ID.getKey(), obj.getKey());
 
-    DeviceIdRequest inputs2 = devIdReqFac.setName(null)
+    DeviceModel inputs2 = devIdReqFac.setName(null)
         .setBrand(null)
         .setId(0)
         .get();
 
     handler = (PutDevice) assertDoesNotThrow(() -> putDevice.execute(inputs2));
     assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, handler.getStatus());
-    obj = (ExceptionResponse) handler.getOutput();
+    obj = (ExceptionModel) handler.getOutput();
     assertEquals(ExceptionEnum.INVALID_ID.getKey(), obj.getKey());
 
-    DeviceIdRequest inputs3 = devIdReqFac.setName(null)
+    DeviceModel inputs3 = devIdReqFac.setName(null)
         .setBrand(null)
         .setId(999999)
         .get();
 
     handler = (PutDevice) assertDoesNotThrow(() -> putDevice.execute(inputs3));
     assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, handler.getStatus());
-    obj = (ExceptionResponse) handler.getOutput();
+    obj = (ExceptionModel) handler.getOutput();
     assertEquals(ExceptionEnum.DEVICE_NOT_FOUND.getKey(), obj.getKey());
 
-    DeviceIdRequest inputs4 = devIdReqFac.setBrand("brand_name_wdqwqdwdqwdqwdqwdqwdqwdq3232")
+    DeviceModel inputs4 = devIdReqFac.setBrand("brand_name_wdqwqdwdqwdqwdqwdqwdqwdq3232")
         .setName(null)
         .setId(1)
         .get();
 
     handler = (PutDevice) assertDoesNotThrow(() -> putDevice.execute(inputs4));
     assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, handler.getStatus());
-    obj = (ExceptionResponse) handler.getOutput();
+    obj = (ExceptionModel) handler.getOutput();
     assertEquals(ExceptionEnum.INVALID_BRAND.getKey(), obj.getKey());
 
-    DeviceIdRequest inputs5 = devIdReqFac.setName("name_wdqwqdwdqwdqwdqwdqwdqwdq3232qwdd")
+    DeviceModel inputs5 = devIdReqFac.setName("name_wdqwqdwdqwdqwdqwdqwdqwdq3232qwdd")
         .setBrand(null)
         .setId(1)
         .get();
 
     handler = (PutDevice) assertDoesNotThrow(() -> putDevice.execute(inputs5));
     assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, handler.getStatus());
-    obj = (ExceptionResponse) handler.getOutput();
+    obj = (ExceptionModel) handler.getOutput();
     assertEquals(ExceptionEnum.INVALID_NAME.getKey(), obj.getKey());
   }
 
@@ -193,7 +191,7 @@ public class DeviceHandlerTest extends ApplicationTests {
     GetDevice handler = (GetDevice) assertDoesNotThrow(() -> getDevice.execute(dev.getId()));
     assertEquals(HttpStatus.OK, handler.getStatus());
 
-    DeviceResponse response = (DeviceResponse) handler.getOutput();
+    DeviceModel response = (DeviceModel) handler.getOutput();
     assertEquals(dev.getName(), response.getName());
     assertEquals(dev.getBrand(), response.getBrand());
     assertEquals(dev.getCreation(), response.getCreation());
@@ -204,17 +202,17 @@ public class DeviceHandlerTest extends ApplicationTests {
   public void getDeviceFailTest() {
     GetDevice handler = (GetDevice) assertDoesNotThrow(() -> getDevice.execute(0));
     assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, handler.getStatus());
-    ExceptionResponse obj = (ExceptionResponse) handler.getOutput();
+    ExceptionModel obj = (ExceptionModel) handler.getOutput();
     assertEquals(ExceptionEnum.INVALID_ID.getKey(), obj.getKey());
 
     handler = (GetDevice) assertDoesNotThrow(() -> getDevice.execute(99999));
     assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, handler.getStatus());
-    obj = (ExceptionResponse) handler.getOutput();
+    obj = (ExceptionModel) handler.getOutput();
     assertEquals(ExceptionEnum.DEVICE_NOT_FOUND.getKey(), obj.getKey());
 
     handler = (GetDevice) assertDoesNotThrow(() -> getDevice.execute(null));
     assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, handler.getStatus());
-    obj = (ExceptionResponse) handler.getOutput();
+    obj = (ExceptionModel) handler.getOutput();
     assertEquals(ExceptionEnum.INVALID_ID.getKey(), obj.getKey());
   }
 
@@ -230,17 +228,17 @@ public class DeviceHandlerTest extends ApplicationTests {
   public void deleteDeviceFailTest() {
     DeleteDevice handler = (DeleteDevice) assertDoesNotThrow(() -> deleteDevice.execute(-1));
     assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, handler.getStatus());
-    ExceptionResponse obj = (ExceptionResponse) handler.getOutput();
+    ExceptionModel obj = (ExceptionModel) handler.getOutput();
     assertEquals(ExceptionEnum.INVALID_ID.getKey(), obj.getKey());
 
     handler = (DeleteDevice) assertDoesNotThrow(() -> deleteDevice.execute(999999));
     assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, handler.getStatus());
-    obj = (ExceptionResponse) handler.getOutput();
+    obj = (ExceptionModel) handler.getOutput();
     assertEquals(ExceptionEnum.DEVICE_NOT_FOUND.getKey(), obj.getKey());
 
     handler = (DeleteDevice) assertDoesNotThrow(() -> deleteDevice.execute(null));
     assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, handler.getStatus());
-    obj = (ExceptionResponse) handler.getOutput();
+    obj = (ExceptionModel) handler.getOutput();
     assertEquals(ExceptionEnum.INVALID_ID.getKey(), obj.getKey());
   }
 
@@ -248,7 +246,7 @@ public class DeviceHandlerTest extends ApplicationTests {
   public void getDevicesSuccessTest() {
     devFact.get(5);
 
-    DeviceIdRequest inputs = devIdReqFac.setName(null)
+    DeviceModel inputs = devIdReqFac.setName(null)
         .setBrand(null)
         .setId(null)
         .get();

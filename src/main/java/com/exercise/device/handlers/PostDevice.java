@@ -4,20 +4,19 @@ import com.exercise.device.database.entities.Device;
 import com.exercise.device.database.handlers.DeviceHandler;
 import com.exercise.device.exceptions.DeviceException;
 import com.exercise.device.exceptions.ExceptionEnum;
-import com.exercise.device.models.DeviceRequest;
-import com.exercise.device.models.DeviceResponse;
+import com.exercise.device.models.DeviceModel;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PostDevice extends CommonHandler<DeviceRequest, DeviceResponse> {
+public class PostDevice extends CommonHandler<DeviceModel, DeviceModel> {
   @Autowired
   private DeviceHandler deviceHandler;
 
   @Override
-  protected DeviceResponse handleRequest(DeviceRequest aInput) throws Exception {
+  protected DeviceModel handleRequest(DeviceModel aInput) throws Exception {
     validate(aInput);
 
     return deviceHandler.create(aInput);
@@ -29,7 +28,7 @@ public class PostDevice extends CommonHandler<DeviceRequest, DeviceResponse> {
    * @param aInput
    * @throws DeviceException
    */
-  private void validate(DeviceRequest aInput) throws DeviceException {
+  private void validate(DeviceModel aInput) throws DeviceException {
     String brand = aInput.getBrand();
     String name = aInput.getName();
 

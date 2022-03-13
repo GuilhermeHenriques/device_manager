@@ -10,7 +10,7 @@ import java.util.List;
 import com.exercise.device.ApplicationTests;
 import com.exercise.device.database.entities.Device;
 import com.exercise.device.factories.entities.DeviceFactory;
-import com.exercise.device.models.DeviceResponse;
+import com.exercise.device.models.DeviceModel;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class DeviceMapperTest extends ApplicationTests {
 
     assertNull(DeviceMapper.device(null));
 
-    DeviceResponse response = DeviceMapper.device(dev);
+    DeviceModel response = DeviceMapper.device(dev);
     assertNotNull(response);
     assertEquals(dev.getId(), response.getId());
     assertEquals(dev.getName(), response.getName());
@@ -37,7 +37,7 @@ public class DeviceMapperTest extends ApplicationTests {
   public void listTest() {
     List<Device> dev = factory.get(5);
 
-    List<DeviceResponse> response = DeviceMapper.list(null);
+    List<DeviceModel> response = DeviceMapper.list(null);
     assertEquals(0, response.size());
 
     response = DeviceMapper.list(new ArrayList<Device>());

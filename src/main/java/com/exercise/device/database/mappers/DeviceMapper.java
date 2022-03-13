@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.exercise.device.database.entities.Device;
-import com.exercise.device.models.DeviceResponse;
+import com.exercise.device.models.DeviceModel;
 
 public class DeviceMapper {
   /**
@@ -13,12 +13,12 @@ public class DeviceMapper {
    * @param aEntity
    * @return
    */
-  public static DeviceResponse device(Device aEntity) {
+  public static DeviceModel device(Device aEntity) {
     if (aEntity == null) {
       return null;
     }
 
-    return new DeviceResponse(aEntity.getId(), aEntity.getName(), aEntity.getBrand(), aEntity.getCreation());
+    return new DeviceModel(aEntity.getId(), aEntity.getName(), aEntity.getBrand(), aEntity.getCreation());
   }
 
   /**
@@ -27,8 +27,8 @@ public class DeviceMapper {
    * @param aEntities
    * @return
    */
-  public static List<DeviceResponse> list(List<Device> aEntities) {
-    List<DeviceResponse> result = new ArrayList<DeviceResponse>();
+  public static List<DeviceModel> list(List<Device> aEntities) {
+    List<DeviceModel> result = new ArrayList<DeviceModel>();
 
     if (aEntities == null || aEntities.size() <= 0) {
       return result;

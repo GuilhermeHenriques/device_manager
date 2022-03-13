@@ -4,20 +4,19 @@ import com.exercise.device.database.entities.Device;
 import com.exercise.device.database.handlers.DeviceHandler;
 import com.exercise.device.exceptions.DeviceException;
 import com.exercise.device.exceptions.ExceptionEnum;
-import com.exercise.device.models.DeviceIdRequest;
-import com.exercise.device.models.DeviceResponse;
+import com.exercise.device.models.DeviceModel;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PutDevice extends CommonHandler<DeviceIdRequest, DeviceResponse> {
+public class PutDevice extends CommonHandler<DeviceModel, DeviceModel> {
   @Autowired
   private DeviceHandler deviceHandler;
 
   @Override
-  protected DeviceResponse handleRequest(DeviceIdRequest aInput) throws DeviceException {
+  protected DeviceModel handleRequest(DeviceModel aInput) throws DeviceException {
     validate(aInput);
     return deviceHandler.update(aInput);
   }
@@ -28,7 +27,7 @@ public class PutDevice extends CommonHandler<DeviceIdRequest, DeviceResponse> {
    * @param aInput
    * @throws DeviceException
    */
-  private void validate(DeviceIdRequest aInput) throws DeviceException {
+  private void validate(DeviceModel aInput) throws DeviceException {
     checkId(aInput.getId());
 
     String brand = aInput.getBrand();

@@ -9,9 +9,7 @@ import com.exercise.device.database.mappers.DeviceMapper;
 import com.exercise.device.database.repositories.IDeviceRepository;
 import com.exercise.device.exceptions.DeviceException;
 import com.exercise.device.exceptions.ExceptionEnum;
-import com.exercise.device.models.DeviceIdRequest;
-import com.exercise.device.models.DeviceRequest;
-import com.exercise.device.models.DeviceResponse;
+import com.exercise.device.models.DeviceModel;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -38,7 +36,7 @@ public class DeviceHandler {
    * @param aModel
    * @return
    */
-  public DeviceResponse create(DeviceRequest aModel) {
+  public DeviceModel create(DeviceModel aModel) {
     logger.info("Creating a new device");
 
     Device dev = new Device();
@@ -59,7 +57,7 @@ public class DeviceHandler {
    * @return
    * @throws DeviceException
    */
-  public DeviceResponse update(DeviceIdRequest aModel) throws DeviceException {
+  public DeviceModel update(DeviceModel aModel) throws DeviceException {
     Device dev = findDevice(aModel.getId());
 
     if (!StringUtils.isBlank(aModel.getName())) {
@@ -84,7 +82,7 @@ public class DeviceHandler {
    * @return
    * @throws DeviceException
    */
-  public DeviceResponse find(Integer aId) throws DeviceException {
+  public DeviceModel find(Integer aId) throws DeviceException {
     Device dev = findDevice(aId);
     return DeviceMapper.device(dev);
   }
@@ -107,7 +105,7 @@ public class DeviceHandler {
    * 
    * @return
    */
-  public List<DeviceResponse> list(DeviceIdRequest aInputs) {
+  public List<DeviceModel> list(DeviceModel aInputs) {
     logger.info("Getting device list");
     List<Device> list = repo.getAllByFilters(aInputs.getId(), aInputs.getBrand(), aInputs.getName());
     logger.info("Found \"" + list.size() + "\" results");

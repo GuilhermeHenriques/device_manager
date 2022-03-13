@@ -2,7 +2,7 @@ package com.exercise.device.handlers;
 
 import com.exercise.device.exceptions.DeviceException;
 import com.exercise.device.exceptions.ExceptionEnum;
-import com.exercise.device.models.ExceptionResponse;
+import com.exercise.device.models.ExceptionModel;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -72,7 +72,7 @@ public abstract class CommonHandler<I, O> {
    */
   protected abstract O handleRequest(I aInput) throws Exception;
 
-  private ExceptionResponse handleFail(Exception e) {
+  private ExceptionModel handleFail(Exception e) {
     DeviceException result = null;
 
     if (e instanceof DeviceException) {
@@ -84,7 +84,7 @@ public abstract class CommonHandler<I, O> {
 
     logger.error(result.getMsg(), e);
 
-    return new ExceptionResponse(result.getCode(), result.getKey(), result.getMsg(), result.getStackTrace());
+    return new ExceptionModel(result.getCode(), result.getKey(), result.getMsg(), result.getStackTrace());
   }
 
   /**
